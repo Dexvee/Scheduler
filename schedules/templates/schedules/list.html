@@ -1,0 +1,95 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}List{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <form class="form my-4" role="search">
+            <div class="input-group" style="border: 2px solid black">
+                <input class="form-control" type="search" aria-label="Search"
+                       placeholder="Найти расписание, введя код, имя создателя или название школы..."
+                       style="border-right: 2px solid #000; font-size: 18px">
+                <button class="btn fw-bold fs-5" type="submit" style="border: none; font-size: 18px">Поиск</button>
+            </div>
+        </form>
+        {% if not schedules %}
+            <h5 class="mb-3">Мы не смогли найти никаких расписаний по заданному запросу</h5>
+        {% elif request.GET.search != '' %}
+            <h5 class="mb-3">Ниже представлены расписания, найденные по вашему запросу.</h5>
+            {% for schedule in schedules %}
+                <div class="col-lg-4">
+                    <div class="card mt-2 mb-4" id="schedule">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                Расписание для {{schedule.class_name}} класса ({{schedule.school_shift}} смена)
+                            </h5>
+                            <h6 class="card-subtitle mb-2 text-muted">
+                                Школа - {{schedule.school_name}}<br>
+                                Создатель - {{schedule.creator.first_name}} {{schedule.creator.last_name}}<br>
+                                Создано - {{schedule.created}}
+                            </h6>
+                            <a href="{% url 'schedules:detail' schedule.pk %}" class="stretched-link"></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            {% if request.user.is_authenticated %}
+                {% if user_schedules %}
+                    <h5 class="mb-3">
+                        Ваши расписания представлены ниже.
+                        <a href="{% url 'schedules:create' %}" class="text-dark">Хотите создать новое?</a>
+                    </h5>
+                    {% for schedule in user_schedules %}
+                    <div class="col-lg-4">
+                        <div class="card mt-2 mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    Расписание для {{schedule.class_name}} класса ({{schedule.school_shift}} смена)
+                                </h5>
+                                <h6 class="card-subtitle mb-2 text-muted">
+                                    Школа - {{schedule.school_name}}<br>
+                                    Создатель - {{schedule.creator.first_name}} {{schedule.creator.last_name}}<br>
+                                    Создано - {{schedule.created}}
+                                </h6>
+                                <a href="{% url 'schedules:detail' schedule.pk %}" class="stretched-link"></a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% if schedules %}
+                        <h5>
+                            Далее представлены чужие расписания
+                        </h5>
+                    {% endif %}
+                {% else %}
+                    <h5>
+                        У вас нет собственных расписаний.
+                        <a href="{% url 'schedules:create' %}" class="text-dark">Собираетесь создать?</a>
+                    </h5>
+                {% endif %}
+            {% endif %}
+
+            {% for schedule in schedules %}
+            <div class="col-lg-4">
+                <div class="card my-2">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Расписание для {{schedule.class_name}} класса ({{schedule.school_shift}} смена)
+                        </h5>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            Школа - {{schedule.school_name}}<br>
+                            Создатель - {{schedule.creator.first_name}} {{schedule.creator.last_name}}<br>
+                            Создано - {{schedule.created}}
+                        </h6>
+                        <a href="{% url 'schedules:detail' schedule.pk %}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}
