@@ -1,0 +1,88 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Create{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        {% if request.user.is_authenticated %}
+        <div class="col-12">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="fs-3 my-3 text-dark text-start">
+                    РАСПИСАНИЕ ДЛЯ УЧЕНИКОВ
+                    <input type="text" name="class_name" class="fs-3 text-dark mx-1" style="width: 65px; height: 35px" maxlength="3">
+                    КЛАССА (
+                    <input type="text" name="school_shift" class="fs-3 text-dark mx-1" style="width: 25px; height: 35px" maxlength="1">
+                    СМЕНА)
+                    <br>
+                    ШКОЛА <input type="text" name="school_name" class="fs-3 text-dark mx-1" style="height: 35px">
+                    РЕГИОН <input type="text" name="region_name" class="fs-3 text-dark mx-1" style="height: 35px">
+                </div>
+
+                <div class="mt-3 fs-5 text-dark text-start">МОЖЕТЕ ЗАГРУЗИТЬ .XLSX ФАЙЛ РАСПИСАНИЯ НИЖЕ</div>
+                <div class="input-group w-50 mb-3">
+                    <input type="file" class="mb-2 form-control" name="file">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-dark">Загрузить</button>
+                    </div>
+                </div>
+
+                {% if format_error %}
+                <div class="fs-5 text-danger mb-4"><strong>ОШИБКА:</strong> НЕПОДХОДЯЩИЙ ФОРМАТ ФАЙЛА (ДОЛЖЕН БЫТЬ .CSV)</div>
+                {% endif %}
+
+                {% if form.errors %}
+                    <div class="my-3" style="border: 1px dashed #000"></div>
+                    <div class="fs-2 mb-5" style="font-weight: 300">See your errors below</div>
+                    {% for error in form.file.errors %}
+                        <p>- {{error}}</p>
+                    {% endfor %}
+                {% endif %}
+
+                {% for weekday in weekdays %}
+                    <div class="fs-5 text-dark text-start" style="font-weight: 500">{{weekday}}</div>
+                    <table class="table table-bordered table-hover mb-4 text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Урок</th>
+                                <th>Название</th>
+                                <th>Время</th>
+                                <th>Каб.</th>
+                                <th>Учитель</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% with range='1234567' %}
+                        {% for i in range %}
+                            <tr>
+                                <td>{{i}}</td>
+                                <td><input name="{{weekday}}_{{i}}_name" type="text" class="w-75"></td>
+                                <td><input name="{{weekday}}_{{i}}_time" type="text" class="w-75"></td>
+                                <td><input name="{{weekday}}_{{i}}_cabinet" type="text" class="w-75"></td>
+                                <td><input name="{{weekday}}_{{i}}_teacher" type="text" class="w-75"></td>
+                            </tr>
+                        {% endfor %}
+                        {% endwith %}
+                        </tbody>
+                    </table>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-dark fs-4">Создать расписание</button>
+            </form>
+        </div>
+        {% else %}
+        <div class="col text-center" style="margin-block: 50px">
+            <h3 class="mb-2">
+                Перед созданием расписания, вы должны зарегистрироваться<br>
+            </h3>
+
+            <a href="{% url 'accounts:register' %}" type="button" class="btn btn-outline-dark w-50 fs-4 mt-4" style="border-width: 3px; font-weight: 500">Регистрация</a>
+            <div class="fs-5 mt-4">Уже есть аккаунт? <a href="{% url 'accounts:login' %}" class="text-muted fs-5 text-decoration-none">Войти</a></div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content%}

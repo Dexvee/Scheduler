@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Register{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row mt-4 mb-5">
+        <form method="post" class="col-lg-7">
+            {% csrf_token %}
+            <h6 for="inputFirstName" class="form-label fs-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                </svg>&nbsp;
+                Имя
+            </h6>
+            <input type="text" name="first_name" class="form-control fs-5 mb-3" id="inputFirstName" style="border: 2px solid black">
+            <h6 for="inputLastName" class="form-label fs-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                </svg>&nbsp;
+                Фамилия
+            </h6>
+            <input type="text" name="last_name" class="form-control fs-5 mb-3" id="inputLastName" style="border: 2px solid black">
+
+            <h6 for="inputUsername" class="form-label fs-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                </svg>&nbsp;
+                Имя пользователя
+            </h6>
+            <input type="text" name="username" class="form-control fs-5 mb-3" id="inputUsername" style="border: 2px solid black">
+
+            <h6 for="inputEmail" class="form-label fs-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+                    <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z"/>
+                </svg>&nbsp;
+                Электронная почта
+            </h6>
+            <input type="email" name="email" class="form-control fs-5 mb-3" id="inputEmail" style="border: 2px solid black">
+
+            <h6 for="inputPassword1" class="form-label fs-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
+                </svg>
+                Пароль
+            </h6>
+            <input type="password" name="password1" class="form-control fs-5 mb-3" id="inputPassword1" style="border: 2px solid black">
+            <h6 for="inputPassword2" class="form-label fs-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
+                </svg>
+                Пароль (повторно)
+            </h6>
+            <input type="password" name="password2" class="form-control fs-5 mb-3" id="inputPassword2" style="border: 2px solid black">
+
+            <button type="submit" class="btn btn-dark px-5 fs-4 mb-3">Зарегистрироваться</button>
+            <div class="fs-5 mb-3" style="font-weight: 500">
+                Уже есть аккаунт? <a href="{% url 'accounts:login' %}" class="text-muted fs-5 text-decoration-none">Войти</a>
+            </div>
+
+            {% if form.errors %}
+                <div class="fs-5 text-danger fw-bold">Возникли ошибки:</div>
+                <div class="text-danger">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                        <strong>- {{field.label}}:</strong> {{ error|escape }} <br>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </form>
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock content %}

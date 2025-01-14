@@ -1,0 +1,15 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Successful Deletion{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <h3 class="text-dark">
+            Расписание было удалено.
+            <a class="text-dark" href="{% url 'home' %}">Вернуться на главную страницу?</a>
+        </h3>
+    </div>
+</div>
+{% endblock content%}

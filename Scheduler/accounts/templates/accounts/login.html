@@ -1,0 +1,42 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row mt-4 mb-5">
+        <form method="post" class="col-lg-7">
+            {% csrf_token %}
+            <h6 for="inputUsername" class="form-label fs-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                </svg>
+                Имя пользователя
+            </h6>
+            <input type="text" name="username" class="form-control fs-5 mb-3" id="inputUsername" style="border: 2px solid black">
+
+            <h6 for="inputPassword" class="form-label fs-5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-lock-fill" viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
+                </svg>
+                Пароль
+            </h6>
+            <input type="password" name="password" class="form-control fs-5 mb-3" id="inputPassword" style="border: 2px solid black">
+
+            <button type="submit" class="btn btn-dark px-5 fs-4 mb-3">Войти</button>
+            <div class="fs-5 mb-3" style="font-weight: 500">
+                Еще нет аккаунта? <a href="{% url 'accounts:register' %}" class="text-muted fs-5 text-decoration-none">Зарегистрироваться</a>
+            </div>
+            {% if form.errors %}
+            <div class="fs-5 text-danger fw-bold">Возникли ошибки:</div>
+            <div class="text-danger">
+                <div class="alert alert-danger">
+                    {{ form.errors }}
+                </div>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
+{% endblock content%}

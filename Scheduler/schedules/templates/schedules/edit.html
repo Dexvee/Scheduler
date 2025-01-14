@@ -1,0 +1,125 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Edit{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        {% if request.user.is_authenticated %}
+        <div class="col-12">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="fs-3 my-3 text-dark text-start">
+                    РАСПИСАНИЕ ДЛЯ УЧЕНИКОВ
+                    <input type="text" name="class_name" value="{{class_name}}" class="fs-3 text-dark mx-1"
+                           style="width: 65px; height: 35px" maxlength="3">
+                    КЛАССА (
+                    <input type="text" name="school_shift" value="{{school_shift}}" class="fs-3 text-dark mx-1"
+                           style="width: 25px; height: 35px" maxlength="1">
+                    СМЕНА)
+                    <br>
+                    ШКОЛА <input type="text" name="school_name" value="{{school_name}}" class="fs-3 text-dark mx-1" style="height: 35px">
+                    РЕГИОН <input type="text" name="region_name" value="{{region_name}}" class="fs-3 text-dark mx-1" style="height: 35px">
+                </div>
+
+                <div class="mt-3 fs-5 text-dark text-start">МОЖЕТЕ ЗАГРУЗИТЬ .XLSX ФАЙЛ РАСПИСАНИЯ НИЖЕ</div>
+                <div class="input-group w-50 mb-3">
+                    <input type="file" class="mb-2 form-control" name="file">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-dark">Загрузить</button>
+                    </div>
+                </div>
+
+                {% for weekday, lesson_data in schedule.items %}
+
+                <div class="fs-5 text-dark text-start" style="font-weight: 500">{{weekday}}</div>
+                <table class="table table-bordered table-hover mb-4 text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Урок</th>
+                            <th>Название</th>
+                            <th>Время</th>
+                            <th>Каб.</th>
+                            <th>Учитель</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><input name="{{weekday}}_1_name" type="text" value="{{lesson_data.0.0}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_1_time" type="text" value="{{lesson_data.0.1}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_1_cabinet" type="text" value="{{lesson_data.0.2}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_1_teacher" type="text" value="{{lesson_data.0.3}}" class="w-75"></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><input name="{{weekday}}_2_name" type="text" value="{{lesson_data.1.0}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_2_time" type="text" value="{{lesson_data.1.1}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_2_cabinet" type="text" value="{{lesson_data.1.2}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_2_teacher" type="text" value="{{lesson_data.1.3}}" class="w-75"></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><input name="{{weekday}}_3_name" type="text" value="{{lesson_data.2.0}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_3_time" type="text" value="{{lesson_data.1.1}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_3_cabinet" type="text" value="{{lesson_data.1.2}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_3_teacher" type="text" value="{{lesson_data.1.3}}" class="w-75"></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><input name="{{weekday}}_4_name" type="text" value="{{lesson_data.3.0}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_4_time" type="text" value="{{lesson_data.3.1}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_4_cabinet" type="text" value="{{lesson_data.3.2}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_4_teacher" type="text" value="{{lesson_data.3.3}}" class="w-75"></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><input name="{{weekday}}_5_name" type="text" value="{{lesson_data.4.0}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_5_time" type="text" value="{{lesson_data.4.1}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_5_cabinet" type="text" value="{{lesson_data.4.2}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_5_teacher" type="text" value="{{lesson_data.4.3}}" class="w-75"></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><input name="{{weekday}}_6_name" type="text" value="{{lesson_data.5.0}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_6_time" type="text" value="{{lesson_data.5.1}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_6_cabinet" type="text" value="{{lesson_data.5.2}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_6_teacher" type="text" value="{{lesson_data.5.3}}" class="w-75"></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><input name="{{weekday}}_7_name" type="text" value="{{lesson_data.6.0}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_7_time" type="text" value="{{lesson_data.6.1}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_7_cabinet" type="text" value="{{lesson_data.6.2}}" class="w-75"></td>
+                            <td><input name="{{weekday}}_7_teacher" type="text" value="{{lesson_data.6.3}}" class="w-75"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                {% endfor %}
+
+                <button type="submit" class="btn btn-dark fs-4">Обновить расписание</button>
+            </form>
+            {% if form.errors %}
+                <div class="my-5" style="border: 1px dashed #000"></div>
+                <div class="fs-3 mb-5" style="font-weight: 300">Посмотрите на возникшие ошибки ниже</div>
+                {% for error in form.file.errors %}
+                    <p>- {{error}}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="col text-center" style="margin-block: 50px">
+            <h2 class="mb-2">
+                Перед созданием расписания, вы должны зарегистрироваться<br>
+                <a href="{% url 'home' %}" class="text-decoration-none text-muted fs-4">Вернуться на главную страницу</a>
+            </h2>
+
+            <a href="{% url 'accounts:register' %}" type="button" class="btn btn-outline-dark w-50 fs-3 mt-4" style="border-width: 3px; font-weight: 500">Регистрация</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content%}
