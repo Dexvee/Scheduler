@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.core.validators import ValidationError
 from .models import Schedule
 import csv
 import io
@@ -33,10 +32,10 @@ def create_edit_view(request, pk=None):
             Schedule.objects.filter(pk=pk).update(
                 creator=request.user,
                 schedule=schedule,
-                class_name=request.POST["class_name"],
-                school_shift=request.POST["school_shift"],
-                school_name=request.POST["school_name"],
-                region_name=request.POST["region_name"],
+                class_name=request.POST.get("class_name", "-"),
+                school_shift=request.POST.get("school_shift", "-"),
+                school_name=request.POST.get("school_name", "-"),
+                region_name=request.POST.get("region_name", "-"),
             )
 
             schedule_obj = Schedule.objects.get(pk=pk)
@@ -44,10 +43,10 @@ def create_edit_view(request, pk=None):
             schedule_obj = Schedule.objects.create(
                 creator=request.user,
                 schedule=schedule,
-                class_name=request.POST["class_name"],
-                school_shift=request.POST["school_shift"],
-                school_name=request.POST["school_name"],
-                region_name=request.POST["region_name"],
+                class_name=request.POST.get("class_name", "-"),
+                school_shift=request.POST.get("school_shift", "-"),
+                school_name=request.POST.get("school_name", "-"),
+                region_name=request.POST.get("region_name", "-"),
             )
 
         return redirect("schedules:detail", schedule_obj.pk)
